@@ -1,0 +1,50 @@
+models:
+  Word:
+    word: string:100
+    countary: string:100
+    language: string:100
+    meaning: string:100
+    defination: longtext
+
+  Synonyms:
+    word_id: bigInteger
+    syno_id: bigInteger
+
+controllers:
+  Word:
+    index:
+      query: all
+      render: word.index with:words
+
+    show:
+      render: word.show with:word
+
+    create:
+      redirect: word.create
+
+    store:
+      validate: word, countary, language, meaning, defination, user_id
+      save: word
+      dispatch: SyncMedia with:word
+      fire: NewWord with:word
+      flash: word.word
+      redirect: word.index
+
+    edit:
+      render: word.edit
+
+    update:
+      validate: word, countary, language, meaning, defination, user_id
+      update: word
+      dispatch: SyncMedia with:word
+      fire: NewWord with:word
+      flash: word.word
+      redirect: word.index
+
+    destroy:
+      delete: Word
+      redirect: back
+  
+  Search:
+    index:
+      query: all
