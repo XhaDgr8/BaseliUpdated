@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-    word.index template
+    start
 @endsection

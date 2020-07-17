@@ -36,17 +36,20 @@ class WordController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
         return view('word.create');
     }
 
     /**
-     * @param \App\Http\Requests\WordStoreRequest $request
+     * @param \App\Http\Requests\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(WordStoreRequest $request)
+    public function store(Request $request)
     {
+
+        dd($request);
+
         $word = Word::create($request->all());
 
         SyncMedia::dispatch($word);

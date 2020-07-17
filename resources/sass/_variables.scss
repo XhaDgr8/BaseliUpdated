@@ -1,29 +1,23 @@
 // Body
-//$body-bg: #EAE5FB;
+$body-bg: #f8fafc;
 
 // Typography
-$font-family-sans-serif: 'Raleway', sans-serif;
-$Roboto: 'Roboto', sans-serif;
+$font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 
 // Colors
-$blue: #91b9f8; //rgba(52, 144, 220, 0.5)
-$darkblue: #00224b; //rgba(52, 144, 220, 0.5)
-$indigo: #6574cd;//rgba(101, 116, 205, 0.5)
-$purple: #9561e2;//rgba(149, 97, 226, 0.5)
-$pink: #f66d9b;//rgba(149, 97, 226, 0.5)
-$red: #e3342f;//rgba(227, 52, 47, 0.5)
-$orange: #FFAC30;//;rgba(246, 153, 63, 0.5)
-$yellow: #ffed4a;//;rgba(255, 237, 74, 0.5)
-$green: #38c172;//;rgba(56, 193, 114, 0.5)
-$teal: #4dc0b5;//;rgba(77, 192, 181, 0.5)
-$cyan: #6cb2eb;//rgba(108, 178, 235, 0.5)
+$blue: #3490dc;
+$indigo: #6574cd;
+$purple: #9561e2;
+$pink: #f66d9b;
+$red: #e3342f;
+$orange: #FFAC30;
+$yellow: #ffed4a;
+$green: #38c172;
+$teal: #4dc0b5;
+$cyan: #6cb2eb;
 
 
 $primary:       $orange;
 $secondary:     #F1F3F6;
-
-.roboto {
-    font-family: $Roboto;
-}

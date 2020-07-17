@@ -1,6 +1,6 @@
 created:
-    - database/migrations/2020_07_14_153642_create_words_table.php
-    - database/migrations/2020_07_14_153643_create_synonyms_table.php
+    - database/migrations/2020_07_16_202613_create_words_table.php
+    - database/migrations/2020_07_16_202614_create_synonyms_table.php
     - app/Word.php
     - app/Synonyms.php
     - database/factories/WordFactory.php
@@ -19,5 +19,6 @@ created:
 updated:
     - routes/web.php
 models:
+    User: { name: string, email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string:100 nullable' }
     Word: { word: 'string:100', countary: 'string:100', language: 'string:100', meaning: 'string:100', defination: longtext }
     Synonyms: { word_id: bigInteger, syno_id: bigInteger }
