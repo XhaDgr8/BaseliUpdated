@@ -9,21 +9,13 @@
             {{-- Language And Countary --}}
             <div class="row g-3 align-items-center mb-2">
                 <div class="col-6">
-                    <select name="word-lang" class="form-select form-control border border-dark"
-                        aria-label="Default select example">
-                        <option selected>Language</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select name="word-lang" required class="form-select languages form-control border border-dark">
+                        
                     </select>
                 </div>
                 <div class="col-6">
-                    <select name="word-cntry" class="form-select form-control border border-dark"
-                        aria-label="Default select example">
-                        <option selected>Countary</option>
-                        <option value="1">One</option>
-                        <option value="2">Two</option>
-                        <option value="3">Three</option>
+                    <select name="word-cntry" required class="form-select countries form-control border border-dark">
+                        
                     </select>
                 </div>
             </div>
@@ -34,7 +26,7 @@
                     </label>
                 </div>
                 <div class="col-10 pr-0">
-                    <input type="text" name="word" placeholder="Word" class="form-control border border-dark">
+                    <input type="text" name="word" required placeholder="Word" class="form-control border border-dark">
                 </div>
             </div>
 
@@ -43,14 +35,21 @@
         <div class="container bg-secondary rounded-lg py-3 mt-3">
             <h4 class="roboto">Add Synonums</h4>
 
-            <add-synonyms></add-synonyms>
-
+            <div class="col-12 mt-3">
+                
+                <div id="append"></div>
+                
+                <button id="appender" type="button" class="btn btn-outline-primary container font-weight-bold text-dark roboto shadow-sm">
+                    Add New Synonum
+                </button>
+            </div>
+            
             
         </div>
 
         <div class="container bg-secondary rounded-lg mt-3 py-3">
             <h4 class="roboto">Description</h4>
-            <textarea name="descreption" class="w-100 rounded-lg"></textarea>
+            <textarea name="descreption" required class="w-100 rounded-lg"></textarea>
         </div>
 
     </div>
