@@ -18,14 +18,51 @@ $(document).ready(function () {
             option += '<option value="'+ array[i] + '">' + array[i] + '</option>';
         }
         $(name).append(option);
-
-        console.log("appended");
     }
 
     appendToSelect('.countries', countries);
     appendToSelect('.languages', languages);
 
     var inc = 0;
+
+    $('.asSyn').click(function () {
+        
+        $word = $(this).attr('data-word');
+        $lang = $(this).attr('data-language');
+        $cntry = $(this).attr('data-countary');
+
+        inc = inc + 1;
+        var ell = 'syn-lang-' + inc;
+        var elc = 'syn-cntry-' + inc;
+        var elw = 'syn-word-' + inc;
+        $feilds = `
+        <div class="row g-3 align-items-center mb-2">
+
+            <div class="col-6">
+                <select required name='` + ell + `' class="form-select ` + ell + ` form-control border border-dark">
+                    <option selected value='` + $lang + `'>` + $lang + `</option>
+                </select>
+            </div>
+
+            <div class="col-6">
+                <select required name='` + elc + `' class="form-select ` + elc + ` form-control border border-dark">
+                    <option selected value='` + $cntry + `'>` + $cntry + `</option>
+                </select>
+            </div>
+
+            <div class="col-12 mt-2">
+                <select required name='` + elw + `' class="form-select ` + elc + ` form-control border border-dark">
+                    <option selected value='` + $word + `'>` + $word + `</option>
+                </select>
+            </div>
+        </div>
+        <hr>
+        `;
+        $("#append").append($feilds);
+        appendToSelect("." + elc, countries);
+        appendToSelect("." + ell, countries);
+    });
+
     $('#appender').click(function () {
         
         inc = inc + 1;
@@ -58,4 +95,7 @@ $(document).ready(function () {
         appendToSelect("." + elc, countries);
         appendToSelect("." + ell, countries);
     });
+
 })
+
+

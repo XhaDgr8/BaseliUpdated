@@ -1,7 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-
 <form action="/word" method="POST">
     @csrf
     <div class="container mt-2">
@@ -35,6 +34,33 @@
         </div>
 
         <div class="container bg-secondary rounded-lg py-3 mt-3">
+            <h4 class="roboto">Available Words add as Synonum</h4>
+
+            <div class="col-12 mt-3" style="max-height: 13rem;overflow-y: scroll">
+                @if(count($allwords) > 0)
+                    @foreach($allwords as $syn)
+                        <button type="button" 
+                        data-word="{{$syn->word}}"
+                        data-language="{{$syn->language}}"
+                        data-countary="{{$syn->language}}"
+                        class="asSyn mt-3 btn btn-outline-primary container font-weight-bold text-dark roboto shadow-sm">
+                            <h5>{{$syn->word}}</h5>
+                            <p class="m-0">
+                                <span> lang: {{$syn->language}}</span> 
+                                <span>cntry: {{$syn->countary}}</span>
+                            </p>
+                        </button>
+                    @endforeach
+                    @else
+                    <div class="alert alert-warning" role="alert">
+                        No Words Available
+                    </div>
+                @endif
+            </div>
+            
+        </div>
+
+        <div class="container bg-secondary rounded-lg py-3 mt-3">
             <h4 class="roboto">Add Synonums</h4>
 
             <div class="col-12 mt-3">
@@ -45,7 +71,6 @@
                     Add New Synonum
                 </button>
             </div>
-            
             
         </div>
 

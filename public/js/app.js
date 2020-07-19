@@ -37293,12 +37293,24 @@ $(document).ready(function () {
     }
 
     $(name).append(option);
-    console.log("appended");
   }
 
   appendToSelect('.countries', countries);
   appendToSelect('.languages', languages);
   var inc = 0;
+  $('.asSyn').click(function () {
+    $word = $(this).attr('data-word');
+    $lang = $(this).attr('data-language');
+    $cntry = $(this).attr('data-countary');
+    inc = inc + 1;
+    var ell = 'syn-lang-' + inc;
+    var elc = 'syn-cntry-' + inc;
+    var elw = 'syn-word-' + inc;
+    $feilds = "\n        <div class=\"row g-3 align-items-center mb-2\">\n\n            <div class=\"col-6\">\n                <select required name='" + ell + "' class=\"form-select " + ell + " form-control border border-dark\">\n                    <option selected value='" + $lang + "'>" + $lang + "</option>\n                </select>\n            </div>\n\n            <div class=\"col-6\">\n                <select required name='" + elc + "' class=\"form-select " + elc + " form-control border border-dark\">\n                    <option selected value='" + $cntry + "'>" + $cntry + "</option>\n                </select>\n            </div>\n\n            <div class=\"col-12 mt-2\">\n                <select required name='" + elw + "' class=\"form-select " + elc + " form-control border border-dark\">\n                    <option selected value='" + $word + "'>" + $word + "</option>\n                </select>\n            </div>\n        </div>\n        <hr>\n        ";
+    $("#append").append($feilds);
+    appendToSelect("." + elc, countries);
+    appendToSelect("." + ell, countries);
+  });
   $('#appender').click(function () {
     inc = inc + 1;
     var ell = 'syn-lang-' + inc;

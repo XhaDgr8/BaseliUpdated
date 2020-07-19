@@ -40,8 +40,8 @@ class WordController extends Controller
      */
     public function create()
     {
-        
-        return view('word.create');
+        $allwords = Word::orderBy('word')->get();
+        return view('word.create', compact('allwords'));
     }
 
     /**
@@ -51,8 +51,9 @@ class WordController extends Controller
 
     public function store(Request $request)
     {
+        
         $log = [];
-
+        
         $record = Word::where('word', '=', $request->word)->first();
 
         if ($record != null) {
@@ -111,8 +112,9 @@ class WordController extends Controller
                 }
             };
         }
+        $allwords = Word::orderBy('word')->get();
 
-        return view('word.create', compact('log'));
+        return view('word.create', compact('log','allwords'));
     }
 
     /**
