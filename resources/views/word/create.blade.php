@@ -1,10 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
+
 <form action="/word" method="POST">
     @csrf
     <div class="container mt-2">
         <div class="container bg-secondary rounded-lg py-3">
+            @include('inc.alerts')
             <h3 class="roboto">Create New Word</h3>
             {{-- Language And Countary --}}
             <div class="row g-3 align-items-center mb-2">

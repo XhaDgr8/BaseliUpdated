@@ -40,6 +40,7 @@ class WordController extends Controller
      */
     public function create()
     {
+        
         return view('word.create');
     }
 
@@ -48,75 +49,70 @@ class WordController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    public function insertWord($w, $l, $c, $d)
-    {
-        $record = Word::where('word', '=', $w)->first();
-        if ($record === null) {
-            $word = DB::table('words')->insertOrIgnore([
-                'word' => $w,
-                'countary' => $c,
-                'language' => $l,
-                'defination' => $d,
-            ]);
-        } else {
-            $error = $record->word . " already exists in database";
-        }
-    }
-
     public function store(Request $request)
     {
-        $error = "";
-        $data = request()->validate([
-            'word-lang' => ['string', 'required'],
-            'word-cntry' => ['string', 'required'],
-            'word' => ['string', 'required'],
-            'descreption' => ['string', 'required'],
-        ]);
+        $log = [];
 
-        $this->insertWord($data['word'], $data['word-lang'], $data['word-cntry'], $data['descreption']);
+        $record = Word::where('word', '=', $request->word)->first();
 
-        dd($error);
+        if ($record != null) {
+            $log['danger'][] = $record->word . " already exists in database";
+            
+        } else {
 
+            $data = request()->validate([
+                'word' => ['string', 'required'],
+                'word-lang' => ['string', 'required'],
+                'word-cntry' => ['string', 'required'],
+                'descreption' => ['string', 'required'],
+            ]);
 
-        foreach ($request->all() AS $index => $field) {
-            for ($i=1; $i < sizeof($request->all()); $i++) { 
-                $w = "syn-word-".$i;
-                $l = "syn-lang-".$i;
-                $c = "syn-cntry-".$i;
-                if ($index == $w) {
-                    echo "<br>".$index;
+            $word = Word::create([
+                'word' => $data["word"],
+                'language' => $data["word-lang"],
+                'countary' => $data['word-cntry'],
+                'defination' => $data['descreption'],
+            ]);
+            foreach ($request->all() AS $index => $field) {
+                for ($i=1; $i < sizeof($request->all()); $i++) { 
+    
+                    $w = "syn-word-".$i; $l = "syn-lang-".$i;
+                    $c = "syn-cntry-".$i; $d = $data['descreption'];
+    
+                    if ($index == $w) {
+                        $record = Word::where('word', '=', $field)->first();
+                        if ($record != null) {
 
-                    $data = request()->validate([
-                        $l => ['string', 'required'],
-                        $c => ['string', 'required'],
-                        $w => ['string', 'required'],
-                        'descreption' => ['string', 'required'],
-                    ]);
-        
-                    $synos = Word::insertOrIgnore([
-                        'word' => $data[$w],
-                        'countary'=> $data[$c],
-                        'language'=> $data[$l],
-                        'defination'=> $data['descreption'],
-                    ]);
+                            $synoword = Synonyms::create([
+                                'word_id' => $word->id,
+                                'syno_id' => $record->id,
+                            ]);
 
-                    $synoword = Synonyms::insertOrIgnore([
-                        'word_id' => $word->id,
-                        'syno_id' => $synos->id,
-                    ]);
+                            $log['warning'][] = $record->word . " already exists in database Synonym created Successfully";
+                            
+                        } else if ($record == null) {
+                            
+                            $synos = Word::create([
+                                'word' => $request->$w,
+                                'language' => $request->$l,
+                                'countary' => $request->$c,
+                                'defination' => $request->descreption,
+                            ]);
 
+                            $synoword = Synonyms::create([
+                                'word_id' => $word->id,
+                                'syno_id' => $synos->id,
+                            ]);
+
+                            $log['success'][] = $word->word ." And ". $synos->word." relation created successfylly";
+                        }
+                        $log['success'][] = $word->word .' Created Successfylly';
+                    }
                 }
-            }
-        };
+            };
+        }
 
-        dd($synoword);
-        SyncMedia::dispatch($word);
-
-        event(new NewWord($word));
-
-        $request->session()->flash('word.word', $word->word);
-
-        return back();
+        return view('word.create', compact('log'));
     }
 
     /**
