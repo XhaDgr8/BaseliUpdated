@@ -14,9 +14,10 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('word.create');
+    return redirect('word');
 });
 
+Route::get('word', 'WordController@index');
 
 Route::resource('word', 'WordController');
 

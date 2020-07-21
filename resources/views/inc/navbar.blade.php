@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 
     <div class="container">
-        <a class="navbar-brand" href="/">
+        <a class="navbar-brand" href="{{route('word.index')}}">
             <img class="img-fluid" src="{{asset('storage/sa/logo.svg')}}" alt="">
             <h3 class="d-inline font-weight-bold roboto m-0">ˈdikSHəˌnerē</h3>
         </a>

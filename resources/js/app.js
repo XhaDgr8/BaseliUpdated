@@ -51,9 +51,7 @@ $(document).ready(function () {
             </div>
 
             <div class="col-12 mt-2">
-                <select required name='` + elw + `' class="form-select ` + elc + ` form-control border border-dark">
-                    <option selected value='` + $word + `'>` + $word + `</option>
-                </select>
+                <input required name='` + elw + `' value='` + $word + `' class="form-select ` + elw + ` form-control border border-dark">
             </div>
         </div>
         <hr>

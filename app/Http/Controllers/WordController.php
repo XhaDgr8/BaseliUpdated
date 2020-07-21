@@ -20,7 +20,7 @@ class WordController extends Controller
 
     public function index()
     {
-        $words = Word::all();
+        $words = Word::paginate(10);
         return view('word.index', compact('words'));
     }
 
@@ -29,9 +29,16 @@ class WordController extends Controller
      * @param \App\Word $word
      * @return \Illuminate\Http\Response
      */
-    public function show()
+    public function show(Word $word)
     {
-        return view('word.show', compact('word'));
+        $synonymsdb = Synonyms::where('word_id', $word->id)->get();
+        $synonyms = [];
+        foreach ($synonymsdb as $syno) {
+            $getsyno = Word::where('id', $syno->syno_id)->get();
+            array_push($synonyms, $getsyno);
+        }
+
+        return view('word.show', compact('word', 'synonyms'));
     }
 
     /**
@@ -89,6 +96,8 @@ class WordController extends Controller
                                 'syno_id' => $record->id,
                             ]);
 
+                            $updateDefination = Word::where('word', $record->word)->update(['defination' => $d]);
+
                             $log['warning'][] = $record->word . " already exists in database Synonym created Successfully";
                             
                         } else if ($record == null) {
@@ -103,6 +112,11 @@ class WordController extends Controller
                             $synoword = Synonyms::create([
                                 'word_id' => $word->id,
                                 'syno_id' => $synos->id,
+                            ]);
+
+                            $synoword = Synonyms::create([
+                                'word_id' => $synos->id,
+                                'syno_id' => $word->id,
                             ]);
 
                             $log['success'][] = $word->word ." And ". $synos->word." relation created successfylly";
@@ -137,10 +151,6 @@ class WordController extends Controller
         $word->update([]);
 
         SyncMedia::dispatch($word);
-
-        event(new NewWord($word));
-
-        $request->session()->flash('word.word', $word->word);
 
         return redirect()->route('word.index');
     }
