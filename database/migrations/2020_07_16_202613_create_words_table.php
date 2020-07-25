@@ -18,7 +18,6 @@ class CreateWordsTable extends Migration
             $table->string('word', 100);
             $table->string('countary', 100);
             $table->string('language', 100);
-            $table->string('meaning', 100)->nullable();
             $table->longText('defination');
             $table->timestamps();
         });

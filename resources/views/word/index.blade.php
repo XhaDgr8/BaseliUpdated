@@ -1,9 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-3 rounded-lg">
-       <h4>All Available Words</h4>
-       <div class="row">
+    <div class="container">
+        @if(isset($update))
+            <p class="m-0 alert alert-info">{{$update}}</p>
+        @endif
+        <div class="row" id="printJS">
             @if(count($words) > 0)
                 @foreach($words as $word)
                     <div class="col-md-3 col-6 mb-2">
@@ -21,11 +23,15 @@
                 <div class="col-12 d-flex flex-row justify-content-center py-3">
                     {{$words->links()}}
                 </div>
-                @else
+            @else
                 <div class="mx-3 alert alert-warning shadow-sm" role="alert">
                     No Words Available
                 </div>
             @endif
-       </div>
+            <div class="col-12">
+                <a href="/print" class="btn btn-primary shadow-sm btn-block text-white font-weight-bold">Print All</a>
+            </div>
+        </div>
     </div>
 @endsection
+

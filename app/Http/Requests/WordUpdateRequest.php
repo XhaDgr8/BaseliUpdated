@@ -27,13 +27,7 @@ class WordUpdateRequest extends FormRequest
             'word' => 'required|string|max:100',
             'countary' => 'required|string|max:100',
             'language' => 'required|string|max:100',
-            'meaning' => 'required|string|max:100',
-            'defination' => 'required|string',
-            'word' => 'required|string|max:100',
-            'countary' => 'required|string|max:100',
-            'language' => 'required|string|max:100',
-            'meaning' => 'required|string|max:100',
-            'defination' => 'required|string',
+            'defination' => 'required|string'
         ];
     }
 }

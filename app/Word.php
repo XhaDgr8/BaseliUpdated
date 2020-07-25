@@ -15,7 +15,6 @@ class Word extends Model
         'word',
         'countary',
         'language',
-        'meaning',
         'defination',
     ];
 

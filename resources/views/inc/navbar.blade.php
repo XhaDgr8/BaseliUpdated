@@ -6,7 +6,7 @@
             <h3 class="d-inline font-weight-bold roboto m-0">ˈdikSHəˌnerē</h3>
         </a>
 
-        <button class="navbar-toggler border-0 bg-secondary py-2 rounded-lg" type="button" 
+        <button class="navbar-toggler border-0 bg-secondary py-2 rounded-lg" type="button"
         data-toggle="collapse" data-target="#navbarSupportedContent"
         aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <img class="img-fluid" src="{{asset('storage/sa/navtoggle.svg')}}" alt="">
@@ -20,7 +20,7 @@
                 </li>
 
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link" href="/print">Print All</a>
                 </li>
 
             </ul>
