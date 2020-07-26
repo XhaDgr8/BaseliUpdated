@@ -30,7 +30,7 @@
             });
             Fire.$on('returnAll', (words) => {
                 words.forEach((word) => {
-                    document.getElementById(word['word']).style.opacity = "1"
+                    document.getElementById(word['word']).style.display = "auto"
                 })
             });
         },
@@ -45,7 +45,7 @@
                             response.data.forEach((founds) => {
                                 this.words.forEach((word) => {
                                     if (word['word'] == founds['word']){
-                                        document.getElementById(founds['word']).style.opacity = "0";
+                                        document.getElementById(founds['word']).style.display = "none";
                                         var synonym = [founds['id'], founds['word'], founds['language'], founds['countary']];
                                         Fire.$emit('addToSynonums', synonym);
                                     }

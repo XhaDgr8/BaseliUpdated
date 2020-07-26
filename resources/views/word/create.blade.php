@@ -6,8 +6,17 @@
         @include('inc.alerts')
         <h3 class="roboto">Create New Word</h3>
         {{-- Language And Countary --}}
-        <create-word></create-word>
-
+        <form method="post" action="/word/create">
+            @csrf
+            <create-word></create-word>
+            <div class="container">
+                <h4 class="roboto">Defination</h4>
+                <textarea name="defination" class="w-100 rounded-lg"></textarea>
+            </div>
+            <div class="container mt-3 mb-5">
+                <button class="btn btn-primary container font-weight-bold text-dark success roboto shadow">Save & Create New</button>
+            </div>
+        </form>
     </div>
 
     <div class="container bg-secondary rounded-lg py-3 mt-3">

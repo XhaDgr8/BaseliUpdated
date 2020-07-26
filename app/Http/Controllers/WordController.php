@@ -27,24 +27,33 @@ class WordController extends Controller
     public function printAll()
     {
         $words = Word::all();
-        return view('word.print', compact('words'));
+        $synos = [];
+        foreach ($words as $word){
+            $aSyns = $this->getAllSynonyms($word->id);
+            array_push($synos, [$word->word => $aSyns]);
+        }
+        return view('word.print', compact('words','synos'));
     }
 
     public function getAllSynonyms($id)
     {
 
         $synonyms = [];
+
+        $word_defi = Word::where('id', $id)->first();
         $syno_id = Synonyms::where('word_id', $id)->get();
 
         if ($syno_id != null) {
             foreach ($syno_id as $find_word){
                 $found_word = Word::where('id', $find_word->syno_id)->get();
                 foreach ($found_word as $synonym){
+                    $defi = $synonym->defination === $word_defi->defination ? '-' : $synonym->defination;
                     array_push($synonyms, [
                         'id' => $synonym->id,
                         'word' => $synonym->word,
                         'language' => $synonym->language,
                         'countary' => $synonym->countary,
+                        'defination' => $defi,
                     ]);
                 };
             };
@@ -74,38 +83,32 @@ class WordController extends Controller
         return true;
     }
 
+    public function synLoopers($ids)
+    {
+        foreach ($ids as $wo) {
+            foreach ($ids as $so) {
+                if ($wo != $so) {
+                    $this->makeRels($wo, $so);
+                }
+            }
+        }
+        foreach ($ids as $so) {
+            foreach ($ids as $wo) {
+                if ($so != $wo) {
+                    $this->makeRels($wo, $so);
+                }
+            }
+        }
+        return true;
+    }
+
     public function makeSynonyms(Request $request)
     {
         $newArray = [];
         if (count($request->all()) > 1) {
-
-
-            foreach ($request->all() as $wo) {
-                $word = Word::where('id', $request[0])->get();
-                $syn_d = Word::where('id', $wo)->get();
-                $syn_d->first()->update([
-                    "defination" => $word->first()->defination
-                ]);
-                foreach ($request->all() as $so) {
-                    if ($wo != $so) {
-                        if ($this->makeRels($wo, $so, $newArray)){
-                            array_push($newArray,$wo ." Done");
-                        }
-                    }
-                }
-            }
-            foreach ($request->all() as $so) {
-                foreach ($request->all() as $wo) {
-                    if ($so != $wo) {
-                        if ($this->makeRels($wo, $so, $newArray)){
-                            array_push($newArray,$so. "Done");
-                        }
-                    }
-                }
-            }
-
+            $this->synLoopers($request->all());
         } else {
-            array_push($newArray, 'Only 2 words can be made Synonyms at a Time');
+            array_push($newArray, 'A minimum of Two Words Are Required to be made synonyms');
         }
         return $newArray;
     }
@@ -150,31 +153,59 @@ class WordController extends Controller
     public function store(Request $request)
     {
 
-        $log = '';
+        $sliced = array_slice($request->all(),1);
+        $wos = [];
+        $makeSyns = [];
 
-        $data = $request->validate([
-            'word' => ['string', 'required'],
-            'word_lang' => ['string', 'required'],
-            'word_cntry' => ['string', 'required'],
-            'word_defination' => ['string', 'required'],
-        ]);
-
-        $record = Word::where('word', '=', $data['word'])->first();
-
-        if ($record != null) {
-            $log = '<div class="container alert alert-danger"> '.$record->word . ' already exists in database</div>';
-        } else {
-
-            $word = Word::create([
-                'word' => $data["word"],
-                'language' => $data["word_lang"],
-                'countary' => $data['word_cntry'],
-                'defination' => $data['word_defination'],
+        if (array_key_exists('0_word', $sliced)){
+            $rw = '0_word';
+            $rl = '0_language';
+            $rc = '0_countary';
+            array_push($wos, [
+                $request->$rw,
+                $request->$rl,
+                $request->$rc
             ]);
-            $log = '<div class="container alert alert-success"> '.$word->word. ' Created Successfylly</div>';
         }
 
-        return $log;
+        for ($w = 1; $w <= count($sliced); $w++) {
+            if (array_key_exists($w.'_word', $sliced)) {
+                $rw = $w.'_word';
+                array_key_exists($w.'_language', $sliced) ? $rl = $w.'_language' : $rl = '';
+                array_key_exists($w.'_countary', $sliced) ? $rc = $w.'_countary' : $rc = '';
+                array_push($wos, [
+                    $request->$rw,
+                    $rl != '' ? $request->$rl : [],
+                    $rc != '' ? $request->$rc : [],
+                ]);
+            }
+        }
+
+        foreach ($wos as $create) {
+            $ifWordExists = Word::where('word', $create[0])->first();
+
+            if ($ifWordExists == null) {
+                $word = Word::create([
+                    'word' => $create[0],
+                    'language' => $create[1],
+                    'countary' => $create[2],
+                    'defination' => $request->defination,
+                ]);
+                array_push($makeSyns, $word->id);
+            } else {
+                $syns = Synonyms::where('word_id', $ifWordExists->id)->get();
+                foreach ($syns as $syn){
+                    array_push($makeSyns, $syn->syno_id);
+                }
+                array_push($makeSyns, $ifWordExists->id);
+            }
+        }
+
+        if (count($makeSyns) > 1) {
+            $this->synLoopers($makeSyns);
+        }
+
+        return back();
     }
 
     /**
@@ -218,15 +249,15 @@ class WordController extends Controller
             'defination' => $request->defination,
         ]);
 
-        $syn_d = Synonyms::where('word_id', $word->id)->get();
-        foreach ($syn_d as $syns) {
-            $get_words = Word::where('id', $syns->syno_id)->get();
-            foreach ($get_words as $gw){
-                $gw->update([
-                    "defination" => $word->defination
-                ]);
-            }
-        }
+//        $syn_d = Synonyms::where('word_id', $word->id)->get();
+//        foreach ($syn_d as $syns) {
+//            $get_words = Word::where('id', $syns->syno_id)->get();
+//            foreach ($get_words as $gw){
+//                $gw->update([
+//                    "defination" => $word->defination
+//                ]);
+//            }
+//        }
 
         return redirect()->back();
     }
