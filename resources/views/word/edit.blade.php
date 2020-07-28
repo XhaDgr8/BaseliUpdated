@@ -52,7 +52,7 @@
                         <input name="0_language" value="{{$word->language}}" type="hidden">
                         <input name="0_countary" value="{{$word->countary}}" type="hidden">
                         <input name="defination" value="{{$word->defination}}" type="hidden">
-                        <create-word></create-word>
+                        <create-word></create-word>e
 {{--                        <div class="container">--}}
 {{--                            <h4 class="roboto">Defination</h4>--}}
 {{--                            <textarea name="defination" class="w-100 rounded-lg"></textarea>--}}

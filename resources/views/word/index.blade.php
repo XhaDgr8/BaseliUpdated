@@ -2,10 +2,14 @@
 
 @section('content')
     <div class="container">
+
+    </div>
+    <div class="container">
+
         @if(isset($update))
             <p class="m-0 alert alert-info">{{$update}}</p>
         @endif
-        <div class="row" id="printJS">
+        <div class="row">
             @if(count($words) > 0)
                 @foreach($words as $word)
                     <div class="col-md-3 col-6 mb-2">

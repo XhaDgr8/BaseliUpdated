@@ -21,17 +21,46 @@ class WordController extends Controller
 
     public function index()
     {
-        $words = Word::paginate(10);
+        $words = Word::paginate(50);
         return view('word.index', compact('words'));
     }
     public function printAll()
     {
         $words = Word::all();
+        $allWords = [];
         $synos = [];
+
+
         foreach ($words as $word){
+            array_push($allWords, $word->word);
             $aSyns = $this->getAllSynonyms($word->id);
             array_push($synos, [$word->word => $aSyns]);
         }
+
+        function looper($synos,$allWord) {
+            foreach ($synos as $filter) {
+                foreach ($filter as $item) {
+                    foreach ($item as $wo) {
+                        if ($wo['word'] == $allWord){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+
+        foreach ($allWords as $key => $allWord) {
+            if ($key > 0) {
+                if(looper($synos,$allWord) == true){
+                    foreach ($synos as $key => $items){
+                        if (isset($items[$allWord])){
+                            unset($synos[$key]);
+                        }
+                    }
+                }
+            }
+        }
+
         return view('word.print', compact('words','synos'));
     }
 

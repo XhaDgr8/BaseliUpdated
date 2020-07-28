@@ -1,65 +1,41 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mt-3 rounded-lg">
+    <div class="container-fluid mt-3 rounded-lg">
         <h4>All Available Words</h4>
+        <hr>
         <div style="width: 100%" id="printJS-form">
 
-            @if(count($words) > 0)
-                @foreach($words as $word)
-                    <div style="margin-bottom: 3rem">
-                        <table style="width: 100%; margin-left: auto; margin-right: auto;" border="1px">
-                            <tbody style="text-align: center;">
-                            <tr style="height: 32px;">
-                                <td style="width: 330px;"><strong>Lemma</strong></td>
-                                <td style="width: 330px;">{{$word->word}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table style="width: 100%; margin-left: auto; margin-right: auto;" border="1px">
-                            <tbody style="text-align: center;">
-                            <tr style="height: 32px;">
-                                <td style="width: auto; height: 32px;"><strong>Language</strong></td>
-                                <td style="width: auto; height: 32px;"><strong>Country</strong></td>
-                                <td style="width: auto; height: 32px;"><strong>Definition</strong></td>
-                            </tr>
-                            <tr style="height: auto;">
-                                <td style="width: auto; height: 32px;">{{$word->language}}</td>
-                                <td style="width: auto; height: 32px;">{{$word->countary}}</td>
-                                <td style="width: 500px; height: 32px;">{{$word->defination}}</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table style="width: 100%; margin-left: auto; margin-right: auto;" border="1px">
-                            <tbody style="text-align: center;">
-                            <tr style="height: 32px;">
-                                <td style="width: auto;">Synonym</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        @foreach($synos as $nyms)
-                            @if(isset($nyms[$word->word]))
-                                @foreach($nyms[$word->word] as $syns)
-                                    <table style="width: 100%; margin-left: auto; margin-right: auto;" border="1px">
-                                        <tbody style="text-align: center;">
-                                        <tr style="height: 32px;">
-                                            <td style="width: 220px; height: 32px;"><strong>word</strong></td>
-                                            <td style="width: 220px; height: 32px;"><strong>Language</strong></td>
-                                            <td style="width: 220px; height: 32px;"><strong>Country</strong></td>
-                                            <td style="width: 500px; height: 32px;"><strong>Definition</strong></td>
-                                        </tr>
-                                        <tr style="height: auto;">
-                                            <td style="width: 220px; height: 32px;">{{$syns['word']}}</td>
-                                            <td style="width: 220px; height: 32px;">{{$syns['language']}}</td>
-                                            <td style="width: 220px; height: 32px;">{{$syns['countary']}}</td>
-                                            <td style="width: 500px; height: 32px;">{{$syns['defination']}}</td>
-                                        </tr>
-                                        </tbody>
-                                    </table>
+            @if(count($synos) > 0)
+                @foreach($synos as $syno)
+                    @foreach($syno as $key => $syn)
+                        @php
+                            $word = \App\Word::where('word', $key)->first();
+                        @endphp
+                        <h4 class="m-0">{{$word->word}}</h4>
+                        <p>
+                            @foreach($syn as $sy)
+                                @if($sy["language"] == "Latin")
+                                    <strong>{{$sy["language"]}}</strong> - <strong>{{$sy["word"]}}</strong>
+                                @endif
+                            @endforeach
+                             . {{$word->defination}} .
+                                @foreach($syn as $sy)
+                                    @if($sy["language"] != "Latin" AND $sy["language"] != "English")
+                                        {{$sy["countary"]}}.: <strong>{{$sy['word']}}</strong>
+                                    @endif
                                 @endforeach
-                            @endif
+                                @foreach($syn as $sy)
+                                    @if($sy["language"] == "English")
+                                        - <strong>{{$sy["language"]}}</strong>.: <strong>{{$sy['word']}}</strong>
+                                    @endif
+                                @endforeach
+                        </p>
+                        @foreach($syn as $key => $sy)
+                            <p style="margin-bottom: 0"><strong>{{$sy['word']}}</strong></p>
+                            <p style="margin-bottom: 0">{{$sy['countary']}}.: ver {{$word->word}}</p>
                         @endforeach
-                    </div>
+                    @endforeach
                 @endforeach
             @else
                 <div class="mx-3 alert alert-warning shadow-sm" role="alert">
