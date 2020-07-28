@@ -16,23 +16,23 @@
                         <p>
                             @foreach($syn as $sy)
                                 @if($sy["language"] == "Latin")
-                                    <strong>{{$sy["language"]}}</strong> - <strong>{{$sy["word"]}}</strong>
+                                    {{$sy["language"]}} - {{$sy["word"]}}
                                 @endif
                             @endforeach
                              . {{$word->defination}} .
                                 @foreach($syn as $sy)
                                     @if($sy["language"] != "Latin" AND $sy["language"] != "English")
-                                        {{$sy["countary"]}}.: <strong>{{$sy['word']}}</strong>
+                                        {{$sy["countary"]}}.: {{$sy['word']}}
                                     @endif
                                 @endforeach
                                 @foreach($syn as $sy)
                                     @if($sy["language"] == "English")
-                                        - <strong>{{$sy["language"]}}</strong>.: <strong>{{$sy['word']}}</strong>
+                                        - {{$sy["language"]}}.: {{$sy['word']}}
                                     @endif
                                 @endforeach
                         </p>
                         @foreach($syn as $key => $sy)
-                            <p style="margin-bottom: 0"><strong>{{$sy['word']}}</strong></p>
+                            <p style="margin-bottom: 0">{{$sy['word']}}<</p>
                             <p style="margin-bottom: 0">{{$sy['countary']}}.: ver {{$word->word}}</p>
                         @endforeach
                     @endforeach
